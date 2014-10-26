@@ -5,14 +5,18 @@ import (
 	"time"
 )
 
+const controllerTableName string = "sensor_controller"
+
 type Controller struct {
 	Id          int64
 	MacAddress  string
 	LastStartup time.Time
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 func NewController(macAddress string, lastUpdate int64) *Controller {
-	return &Controller{0, macAddress, time.Unix(lastUpdate, 0).UTC()}
+	return &Controller{Id: 0, MacAddress: macAddress, LastStartup: time.Unix(lastUpdate, 0).UTC()}
 }
 
 // TODO better error handling
@@ -40,7 +44,7 @@ func LoadControllerByMacAddress(macAddress string) *Controller {
 }
 
 func (c Controller) TableName() string {
-	return "sensor_controller"
+	return controllerTableName
 }
 
 func (c *Controller) SetLastStartup(lastUpdate int64) {

@@ -1,14 +1,24 @@
 package senter
 
-import "github.com/jinzhu/gorm"
+import (
+	"database/sql"
+	"github.com/jinzhu/gorm"
+	"time"
+)
+
+const sensorTableName string = "sensor"
 
 type Sensor struct {
 	Id            int64
 	DeviceAddress string
+	Name          sql.NullString
+	Description   sql.NullString
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 func NewSensor(deviceAddress string) *Sensor {
-	return &Sensor{0, deviceAddress}
+	return &Sensor{Id: 0, DeviceAddress: deviceAddress}
 }
 
 // TODO better error handling
@@ -37,7 +47,22 @@ func LoadSensorByDeviceAddress(deviceAddress string) *Sensor {
 }
 
 func (s Sensor) TableName() string {
-	return "sensor"
+	return sensorTableName
+}
+
+func (s *Sensor) New() bool {
+	return getDb().NewRecord(s)
+}
+
+func (s *Sensor) Create() {
+	db := getDb()
+	if db.NewRecord(s) {
+		if err := db.Create(s).Error; err != nil {
+			logger.Printf("unable to create sensor: %s\n", err)
+		}
+	} else {
+		logger.Printf("cannot create, sensor already exists with id: %d\n", s.Id)
+	}
 }
 
 // TODO on update check rows affected
