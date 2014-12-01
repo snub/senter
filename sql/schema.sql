@@ -8,6 +8,20 @@ CREATE TABLE sensor_controller (
     CONSTRAINT un_mac_address UNIQUE INDEX (mac_address)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
+CREATE TABLE sensor_controller_config (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    controller_id INT UNSIGNED NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    update_interval INT UNSIGNED NOT NULL,
+    ntp_ip_address VARCHAR(45) NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    CONSTRAINT pk_sensor_controller_config_id PRIMARY KEY (id),
+    CONSTRAINT un_controller_id UNIQUE INDEX (controller_id),
+    CONSTRAINT fk_controller_config_id FOREIGN KEY (controller_id) REFERENCES sensor_controller (id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+
 CREATE TABLE sensor (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     device_address CHAR(16) NOT NULL,
