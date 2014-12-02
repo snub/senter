@@ -11,6 +11,7 @@ const sensorTableName string = "sensor"
 type Sensor struct {
 	Id            int64
 	DeviceAddress string
+	ControllerId  int64
 	Name          sql.NullString
 	Description   sql.NullString
 	CreatedAt     time.Time
@@ -18,7 +19,7 @@ type Sensor struct {
 }
 
 func NewSensor(deviceAddress string) *Sensor {
-	return &Sensor{Id: 0, DeviceAddress: deviceAddress}
+	return &Sensor{Id: 0, ControllerId: 0, DeviceAddress: deviceAddress}
 }
 
 // TODO better error handling
@@ -52,6 +53,10 @@ func (s Sensor) TableName() string {
 
 func (s *Sensor) New() bool {
 	return getDb().NewRecord(s)
+}
+
+func (s *Sensor) SetControllerId(controllerId int64) {
+	s.ControllerId = controllerId
 }
 
 func (s *Sensor) Create() {

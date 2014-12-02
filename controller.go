@@ -47,6 +47,10 @@ func (c Controller) TableName() string {
 	return controllerTableName
 }
 
+func (c *Controller) New() bool {
+	return getDb().NewRecord(c)
+}
+
 func (c *Controller) SetLastStartup(lastUpdate int64) {
 	c.LastStartup = time.Unix(lastUpdate, 0).UTC()
 }
