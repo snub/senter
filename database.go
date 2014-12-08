@@ -7,17 +7,24 @@ import (
 	"time"
 )
 
+type DatabaseConfig struct {
+	Host     string `json:"host"`
+	Port     string `json:"port"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Database string `json:"database"`
+}
+
 var dbHandle *gorm.DB = nil
 
 func init() {
 	gorm.NowFunc = func() time.Time {
 		return time.Unix(time.Now().Unix(), 0).UTC()
-		//return time.Now().UTC()
 	}
 }
 
-func InitDatabase(host string, port string, username string, password string, database string) error {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&autocommit=false", username, password, host, port, database)
+func InitDatabase(config *DatabaseConfig) error {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&autocommit=false", config.Username, config.Password, config.Host, config.Port, config.Database)
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		logger.Fatalf("opening database handle failed: %s\n", err)

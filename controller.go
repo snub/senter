@@ -19,6 +19,18 @@ func NewController(macAddress string, lastUpdate int64) *Controller {
 	return &Controller{Id: 0, MacAddress: macAddress, LastStartup: time.Unix(lastUpdate, 0).UTC()}
 }
 
+func LoadControllers() []*Controller {
+	logger.Println("load controllers")
+	db := getDb()
+	var cs []*Controller
+	query := db.Find(&cs)
+	if query.Error != nil {
+		logger.Println("unable to load controllers")
+		return nil
+	}
+	return cs
+}
+
 // TODO better error handling
 func LoadControllerByMacAddress(macAddress string) *Controller {
 	logger.Printf("load controller by mac address: %s\n", macAddress)

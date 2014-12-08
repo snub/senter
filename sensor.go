@@ -22,6 +22,20 @@ func NewSensor(deviceAddress string) *Sensor {
 	return &Sensor{Id: 0, ControllerId: 0, DeviceAddress: deviceAddress}
 }
 
+func LoadSensorsByControllerId(controllerId int64) []*Sensor {
+	logger.Printf("load sensors by controller id: %d\n", controllerId)
+	db := getDb()
+	var ss []*Sensor
+	if err := db.Where("controller_id = ?", controllerId).Find(&ss).Error; err != nil {
+		if err != gorm.RecordNotFound {
+			logger.Printf("unable to load sensors by controller id: %s\n", err)
+		} else {
+			logger.Printf("no record found: controller id = %d\n", controllerId)
+		}
+	}
+	return ss
+}
+
 // TODO better error handling
 func LoadSensorByDeviceAddress(deviceAddress string) *Sensor {
 	logger.Printf("load sensor by device address: %s\n", deviceAddress)
@@ -31,7 +45,7 @@ func LoadSensorByDeviceAddress(deviceAddress string) *Sensor {
 		if err != gorm.RecordNotFound {
 			logger.Printf("unable to load sensor by device address: %s\n", err)
 		} else {
-			logger.Printf("no record found: device address = %s", deviceAddress)
+			logger.Printf("no record found: device address = %s\n", deviceAddress)
 		}
 		return NewSensor(deviceAddress)
 	}
