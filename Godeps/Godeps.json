@@ -9,7 +9,7 @@
 		},
 		{
 			"ImportPath": "github.com/jinzhu/gorm",
-			"Rev": "92e08097167b30928160f3ceb6b5497ec0a1199d"
+			"Rev": "1d5f5f43f37a19d452a920447108de6e9e7b5e96"
 		},
 		{
 			"ImportPath": "github.com/lib/pq/hstore",
