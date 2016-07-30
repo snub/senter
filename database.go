@@ -40,7 +40,7 @@ func InitDatabase(config *DatabaseConfig) error {
 	db.DB().SetMaxOpenConns(100)
 
 	db.SingularTable(true)
-	dbHandle = &db
+	dbHandle = db
 	return nil
 }
 

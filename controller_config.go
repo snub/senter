@@ -31,7 +31,7 @@ func LoadControllerConfigByControllerId(controllerId int64) *ControllerConfig {
 	db := getDb()
 	var cs []ControllerConfig
 	if err := db.Where("controller_id = ?", controllerId).Find(&cs).Error; err != nil {
-		if err != gorm.RecordNotFound {
+		if err != gorm.ErrRecordNotFound {
 			logger.Printf("unable to load controller config bycontroller id: %s\n", err)
 		} else {
 			logger.Printf("no record found: controller id = %d", controllerId)

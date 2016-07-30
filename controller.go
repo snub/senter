@@ -49,7 +49,7 @@ func LoadControllerByMacAddress(macAddress string) *Controller {
 	db := getDb()
 	var cs []Controller
 	if err := db.Where("mac_address = ?", macAddress).Find(&cs).Error; err != nil {
-		if err != gorm.RecordNotFound {
+		if err != gorm.ErrRecordNotFound {
 			logger.Printf("unable to load controller by mac address: %s\n", err)
 		} else {
 			logger.Printf("no record found: mac address = %s", macAddress)

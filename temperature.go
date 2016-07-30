@@ -24,7 +24,7 @@ func LoadTemperaturesBySensorId(sensorId int64) []*Temperature {
 	var ts []*Temperature
 	result := db.Where("sensor_id = ?", sensorId).Order("timestamp desc").Find(&ts)
 	if err := result.Error; err != nil {
-		if err != gorm.RecordNotFound {
+		if err != gorm.ErrRecordNotFound {
 			logger.Printf("unable to load temperatures by sensor id: %s\n", err)
 		} else {
 			logger.Printf("no record found: sensor id = %d\n", sensorId)

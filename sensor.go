@@ -51,7 +51,7 @@ func LoadSensorsByControllerId(controllerId int64) []*Sensor {
 	db := getDb()
 	var ss []*Sensor
 	if err := db.Where("controller_id = ?", controllerId).Find(&ss).Error; err != nil {
-		if err != gorm.RecordNotFound {
+		if err != gorm.ErrRecordNotFound {
 			logger.Printf("unable to load sensors by controller id: %s\n", err)
 		} else {
 			logger.Printf("no record found: controller id = %d\n", controllerId)
@@ -66,7 +66,7 @@ func LoadSensorByDeviceAddress(deviceAddress string) *Sensor {
 	db := getDb()
 	var ss []Sensor
 	if err := db.Where("device_address = ?", deviceAddress).Find(&ss).Error; err != nil {
-		if err != gorm.RecordNotFound {
+		if err != gorm.ErrRecordNotFound {
 			logger.Printf("unable to load sensor by device address: %s\n", err)
 		} else {
 			logger.Printf("no record found: device address = %s\n", deviceAddress)
